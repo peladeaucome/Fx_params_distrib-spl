@@ -1,0 +1,4 @@
+type: simple
+out_channels: 2
+kernel_size: 9
+stride: 8

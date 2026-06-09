@@ -1,0 +1,7 @@
+type: melnext
+kernel_size: 1
+channels_list: [128]
+out_dim: 128
+n_mels: 128
+convnext_bottleneck_factor: 2
+samplerate: 44100

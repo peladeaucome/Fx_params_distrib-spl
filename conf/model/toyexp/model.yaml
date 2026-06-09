@@ -1,0 +1,15 @@
+name: ae
+flow:
+  context_size: 2
+  length: 0
+  layers: static
+  coupling: true
+  nl: 
+    name: rq_spline
+    knots: 4
+distrib:
+  name: gaussian
+  num_mixtures: 1
+  entropy: direct
+
+warmup_length: 10

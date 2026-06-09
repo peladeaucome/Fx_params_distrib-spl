@@ -1,0 +1,37 @@
+defaults:
+  - hydra: deter
+  - _self_  
+
+model:
+  name: deter
+  flow:
+    context_size: null
+    length: 1
+    layers: no
+    nl:
+      name: dsf
+      knots: 8
+    coupling: true
+  distrib:
+    num_mixtures: 1
+    entropy: direct
+  fx_list: [peq6,drc,drc,peq5,sc,peq5,vol]
+  loss: mel
+  learning_rate: 0.05
+  beta:
+    start: 10
+    end: 0.002
+  warmup_length: 2000
+
+experiment:
+  name: MSM_const
+  progress_bar: False
+  max_epochs: 2000
+  lr_sched_patience: 2000
+  early_stopping_patience: 500
+  weight_decay: 0.001
+  batch_size: 8
+  dataset_seed: 1
+  song_key: 15
+
+resume_training: null

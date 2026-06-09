@@ -1,0 +1,3 @@
+name: gaussian
+num_mixtures: 1
+entropy: direct

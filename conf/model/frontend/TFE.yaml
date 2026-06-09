@@ -1,0 +1,4 @@
+type: TFE
+n_bins: 95
+out_dim: 128
+samplerate: 22050

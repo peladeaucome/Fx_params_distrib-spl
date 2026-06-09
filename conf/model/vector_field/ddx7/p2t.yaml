@@ -1,0 +1,5 @@
+type: p2t
+num_tokens: 3
+token_size: 16
+model_size: 32
+num_layers: 5

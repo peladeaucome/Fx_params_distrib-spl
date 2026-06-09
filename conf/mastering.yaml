@@ -1,0 +1,57 @@
+defaults:
+  - model: 1bandeq/deter
+  - model/frontend: melnext_small
+  - model/beta: 1bandeq/base
+  - model/vector_field: mastering/p2t
+  - hydra: deter
+  - _self_  
+
+model:
+  mode: estimation
+  name: deter
+  flow:
+    context_size: 32
+    length: 2
+    layers: no
+    nl:
+      name: dsf
+      knots: 16
+    coupling: true
+  distrib:
+    num_mixtures: 1
+    type: full
+    entropy: direct
+  mlp:
+    depth: 3
+    size: 128
+    type: res
+    bn: true
+  loss: mel
+  learning_rate: 0.0001
+  beta:
+    start: 0.5
+    end: 0.02
+  warmup_length: 175
+  minibatch_ot: false
+  start_from_ae: false
+
+experiment:
+  name: mastering
+  progress_bar: False
+  max_epochs: 200
+  weight_decay: 0.01
+  lr_sched_patience: 250
+  early_stopping_patience: 250
+  batch_size: 16
+  data:
+    name: millionsong
+    splits: [0.8, 0.1, 0.1]
+    seed: 0
+    audio_length: 4
+    fx_norm: null
+  
+  fx:
+    ana: [peq5, vol, drc, vol, drc, peq5, vol, sc]
+    syn: [peq5, drc, limiter, peq5, sc]
+
+resume_training: null

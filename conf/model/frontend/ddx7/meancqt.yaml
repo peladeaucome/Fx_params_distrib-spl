@@ -1,0 +1,6 @@
+type: meancqt
+fmin: 100
+fmax: 4000
+hop_length: 512
+nbins: 256
+samplerate: 44100

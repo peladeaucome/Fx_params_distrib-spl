@@ -1,0 +1,14 @@
+name: deter
+flow:
+  context_size: 32
+  length: 2
+  layers: static
+  nl:
+    name: dsf
+    knots: 32
+  coupling: true
+distrib:
+  name: gaussian
+  num_mixtures: 1
+  entropy: direct
+

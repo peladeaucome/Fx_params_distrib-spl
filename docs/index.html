@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="style.css" />
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peladeau - TASLP 2026 submission</title>
+</head>
+
+<body>
+    <header>
+        <div class="titlecenter">
+            <h1>
+                Estimating distributions in DDSP systems: applications to FM synthesis and audio effects estimation
+            </h1>
+        </div>
+        <div class="center">
+            <p style="text-align: center;"> <a
+                    href="mailto:come.peladeau@telecom-paris.fr?subject=Parameter distributions">Côme
+                    Peladeau</a><sup>&#9839;</sup>, Dominique Fourer<sup>&#9837;</sup> and Geoffroy
+                Peeters<sup>&#9839;</sup></p>
+            <p style="text-align: center;">&#9839;: <a
+                    href="https://www.telecom-paris.fr/en/research/labs/information-processing-ltci">LTCI</a>, Télécom
+                Paris, France.</p>
+            <p style="text-align: center;">&#9837;: <a href="https://www.ibisc.univ-evry.fr/en/">IBISC</a>, Univ. Evry
+                Paris-Saclay, France.</p>
+            <p style="text-align: center;">Submitted to IEEE TASLP</p>
+        </div>
+        <div class="center" style="max-width: 600px;">
+            <div class="container">
+                <div><a href=https://github.com/peladeaucome/DAFx_params_distrib-taslp>
+                        <p>
+                            Code
+                        </p>
+                    </a></div>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="center">
+        <hr>
+        <section>
+            <h2>
+                Abstract
+            </h2>
+            <p>
+                Recent studies have proposed to estimate audio synthesizer parameters using deep learning models.
+                In some of these, the models are trained to match the synthesizer's output to the target signal.
+                This requires the synthesizer to be implemented in a differentiable manner, hence those approaches are named ``differentiable digital signal processing'' (DDSP).
+                However, these algorithms are usually not injective functions w.r.t. their parameters: multiple different parameter combinations can generate the same output.
+                This is in contradiction with most approaches which output a single parameter combination to synthesize a given sound.
+                In this work, we propose a probabilistic model that learns all valid parameter combinations.
+                For this, we use the normalizing flows (NF) framework along with mixtures of Gaussians (MoG) to model the target parameter distribution.
+                We optimize our model using the sum of two loss terms: an audio reconstruction loss computed using differentiable signal processing (so that the parameters accurately reproduce the target sound) and an entropy regularization, which encourages the model to output diverse parameter combinations.
+                We evaluate our approach on frequency modulation synthesis parameter estimation.
+            </p>
+
+            <img src="sources/BEAFX_audio_inference_2.svg" alt="Proposed approach" class="figure">
+        </section>
+        <hr>
+        <section>
+            <h2>
+                Estimation of FM synthesis parameters
+            </h2>
+
+            <p>
+                We show here audio examples from our FM synthesis parameters estimation, on the evaluation dataset. The examples here are the ones that were provided in the subjective evaluation.
+            </p>
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/0/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/0/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/0/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/0/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/0/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/1/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/1/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/1/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/1/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/1/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/2/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/2/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/2/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/2/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/2/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/5/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/5/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/5/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/5/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/5/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/6/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/6/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/6/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/6/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/6/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/7/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/7/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/7/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/7/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/7/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/8/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/8/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/8/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/8/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/8/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/9/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/9/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/9/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/9/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/9/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/10/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/10/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/10/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/10/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/10/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <hr>
+    </div>
+</body>
+
+</html>

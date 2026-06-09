@@ -1,0 +1,59 @@
+defaults:
+  - hydra: base
+  - model: 1bandeq/deter
+  - model/frontend: ddx7/meanstft
+  - model/vector_field: ddx7/p2t
+  - _self_  
+
+model:
+  name: deter
+  mode: estimation
+  flow:
+    context_size: 16
+    length: 1
+    layers: no
+    nl:
+      name: dsf_dyn
+      knots: 8
+    coupling: true
+  distrib:
+    num_mixtures: 1
+    type: unif
+    entropy: direct
+  mlp:
+    depth: 4
+    size: 128
+    type: res
+    bn: false
+  loss: sot
+  learning_rate: 0.0001
+  beta:
+    start: 0.5
+    end: 0.005
+  warmup_length: 400
+  audio_loss_weight: 1.0
+  params_loss_weight: 0.0
+  start_from_ae: false
+  minibatch_ot: false
+
+
+ddx7:
+  base_freq: 110.00
+  ratio_norm: log
+  min_ratio: 0.5
+  max_ratio: 10
+  max_modulation_amplitude: 12.57
+  noise_amp: 0.0
+
+
+experiment:
+  name: ddx7_56
+  progress_bar: False
+  max_epochs: 500
+  weight_decay: 0.01
+  lr_sched_patience: 10000
+  early_stopping_patience: 10000
+  batch_size: 32
+  dataset_seed: 0
+
+resume_training: null

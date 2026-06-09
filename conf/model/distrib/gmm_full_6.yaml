@@ -1,0 +1,3 @@
+name: gmm_full
+num_mixtures: 6
+entropy: direct

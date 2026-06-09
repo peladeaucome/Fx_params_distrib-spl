@@ -1,0 +1,10 @@
+name: inference
+flow:
+  context_size: 3
+  length: 0
+  layers: static
+  nl: rq_spline
+  nl_knots: 4
+  coupling: false
+
+warmup_length: 10

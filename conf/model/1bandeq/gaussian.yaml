@@ -1,0 +1,15 @@
+name: infer
+
+flow:
+  context_size: 32
+  length: 2
+  layers: no
+  nl:
+    name: dsf
+    knots: 8
+  coupling: true
+distrib:
+  num_mixtures: 1
+  entropy: direct
+
+

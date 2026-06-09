@@ -1,0 +1,6 @@
+run:
+  dir: logs/${experiment.name}/${now:%Y-%m-%d_%H-%M-%S}/run/${model.mode}/${model.mlp.type}/${model.loss}
+sweep:
+  dir: logs/${experiment.name}/${now:%Y-%m-%d_%H-%M-%S}/multirun/${model.mode}/${model.mlp.type}/${model.loss}
+  # ${now:%Y-%m-%d_%H-%M-%S}
+  # subdir: ${hydra.job.num}

@@ -1,0 +1,58 @@
+model:
+  name: infer
+  flow:
+    context_size: 16
+    length: 0
+    layers: false
+    nl:
+      name: dsf_dyn
+      knots: 8
+    coupling: true
+  distrib:
+    name: gaussian
+    num_mixtures: 1
+    entropy: direct
+    type: gaussian_log
+  frontend:
+    type: meanstft
+    n_fft: 2048
+    hop_length: 1024
+  vector_field:
+    type: p2t
+    num_tokens: 3
+    token_size: 16
+    model_size: 32
+    num_layers: 5
+  mode: estimation
+  mlp:
+    depth: 4
+    size: 128
+    type: res
+    bn: false
+  loss: sot
+  learning_rate: 0.0001
+  beta:
+    start: 0.005
+    end: 0.005
+  warmup_length: 400
+  audio_loss_weight: 1.0
+  params_loss_weight: 0.0
+  start_from_ae: false
+  minibatch_ot: false
+ddx7:
+  base_freq: 110.0
+  ratio_norm: log
+  min_ratio: 0.5
+  max_ratio: 10
+  max_modulation_amplitude: 12.57
+  noise_amp: 0.0
+experiment:
+  name: ddx7_56
+  progress_bar: false
+  max_epochs: 500
+  weight_decay: 0.01
+  lr_sched_patience: 10000
+  early_stopping_patience: 10000
+  batch_size: 32
+  dataset_seed: 0
+resume_training: logs/ddx7_56/2026-05-05_20-37-28/run/infer/mix_1_gaussian_log/flow_False_dsf_dyn_0/sot/lightning_logs/version_0/checkpoints/last.ckpt
