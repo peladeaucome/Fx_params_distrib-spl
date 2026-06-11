@@ -1,6 +1,6 @@
 # Estimating Multimodal Distributions of Synthesizer Parameters Using Normalizing Flows
 
-Audio examples can be found on the [paper companion page](https://peladeaucome.github.io/DAFx_params_distrib-taslp/).
+Audio examples can be found on the [paper companion page](https://peladeaucome.github.io/Fx_params_distrib-spl/).
 
 
 ## How to use
