@@ -1,13 +1,10 @@
-# Estimating distributions in DDSP systems: applications to FM synthesis and audio effects estimation
+# Estimating Multimodal Distributions of Synthesizer Parameters Using Normalizing Flows
 
 Audio examples can be found on the [paper companion page](https://peladeaucome.github.io/DAFx_params_distrib-taslp/).
 
 
 ## How to use
 
-There are models programmed for two tasks in this repository:
- - Estimation of FM synthesis parameters
- - Estimation of mastering audio effects
 
 When downloading the repo, the needed libraries can be installed with the `requirements.txt`:
 ```bash
@@ -41,7 +38,7 @@ python train_ddx7_56.py model.name=infer hydra=infer model.distrib.num_mixtures=
 
 Or the Mog-Full-K6-L1 model:
 ```bash
-python train_ddx7_56.py model.name=infer hydra=infer model.distrib.num_mixtures=24 model.flow.length=1 model.distrib.type=unif
+python train_ddx7_56.py model.name=infer hydra=infer model.distrib.num_mixtures=6 model.flow.length=1 model.distrib.type=full
 ```
 
 #### Simulated annealing
@@ -51,7 +48,7 @@ If you want to train a model without, you need to add the `model.beta.start=0.00
 
 #### Evaluation
 
-The models are evaluated using the `test_mastering.py` file.
+The models are evaluated using the `test_ddx7_56_2.py` file.
 
 # Citing this work
 
@@ -63,6 +60,5 @@ Please cite it if you use any of this code in a reseach project:
   author = {Peladeau, Côme and Fourer, Dominique and Peeters, Geoffroy},
   date = {2026-06},
   pubstate = {prepublished},
-  note = {Submitted to IEEE SPL}
 }
 ```
