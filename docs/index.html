@@ -25,7 +25,7 @@
                 Paris, France.</p>
             <p style="text-align: center;">&#9837;: <a href="https://www.ibisc.univ-evry.fr/en/">IBISC</a>, Univ. Evry
                 Paris-Saclay, France.</p>
-            <p style="text-align: center;">Submitted to IEEE TASLP</p>
+            <!-- <p style="text-align: center;">Submitted to IEEE SPL</p> -->
         </div>
         <div class="center" style="max-width: 600px;">
             <div class="container">
@@ -46,18 +46,17 @@
                 Abstract
             </h2>
             <p>
-                Recent studies have proposed to estimate audio synthesizer parameters using deep learning models.
-                In some of these, the models are trained to match the synthesizer's output to the target signal.
-                This requires the synthesizer to be implemented in a differentiable manner, hence those approaches are named ``differentiable digital signal processing'' (DDSP).
-                However, these algorithms are usually not injective functions w.r.t. their parameters: multiple different parameter combinations can generate the same output.
-                This is in contradiction with most approaches which output a single parameter combination to synthesize a given sound.
-                In this work, we propose a probabilistic model that learns all valid parameter combinations.
-                For this, we use the normalizing flows (NF) framework along with mixtures of Gaussians (MoG) to model the target parameter distribution.
-                We optimize our model using the sum of two loss terms: an audio reconstruction loss computed using differentiable signal processing (so that the parameters accurately reproduce the target sound) and an entropy regularization, which encourages the model to output diverse parameter combinations.
-                We evaluate our approach on frequency modulation synthesis parameter estimation.
+                Audio synthesizer parameter estimation is intrinsically multimodal: different parameter configurations can produce the same target sound.
+                However, most estimators return a single parameter set, which hides this ambiguity.
+                We propose a probabilistic approach that estimates the conditional distribution of synthesizer parameters.
+                Our model uses a mixture of Gaussians (MoG) base distribution transformed by normalizing flows (NF).
+                It is trained with an audio reconstruction loss computed through differentiable signal processing together with an entropy regularization term that encourages diverse valid solutions.
+                We use simulated annealing to control the trade-off between reconstruction accuracy and parameter diversity during training.
+                We evaluate our approach on a three-branch frequency modulation (FM) synthesizer using realistic DX7 presets, and compare it with deterministic and flow-matching baselines.
+                The results show that MoG-based NF improve the trade-off between audio reconstruction accuracy and parameter diversity, and can recover meaningful symmetries in the FM parameter space.
             </p>
 
-            <img src="sources/BEAFX_audio_inference_2.svg" alt="Proposed approach" class="figure">
+            <img src="sources/inference_spl-V8.svg" alt="Proposed approach" class="figure">
         </section>
         <hr>
         <section>
@@ -68,6 +67,76 @@
             <p>
                 We show here audio examples from our FM synthesis parameters estimation, on the evaluation dataset. The examples here are the ones that were provided in the subjective evaluation.
             </p>
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/3/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table>
+                <tbody>
+                    <tr class="top bottom">
+                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/input.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/deter2.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann_MAP.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                        <td>
+                            <audio controls>
+                                <source src="sources/audio/ddx7/lv/4/synthperm-p2t.opus" type="audio/ogg">
+                            </audio>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
             <table>
                 <tbody>
                     <tr class="top bottom">
@@ -173,75 +242,6 @@
                 </tbody>
             </table>
 
-            <table>
-                <tbody>
-                    <tr class="top bottom">
-                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/3/input.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/3/deter2.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/3/mog-full-6-ann_MAP.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/3/synthperm-p2t.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <table>
-                <tbody>
-                    <tr class="top bottom">
-                        <td>Target</td><td>Deter.</td><td>Mog-Full-K6</td><td>Mog-Full-K6 (MAP)</td><td>CNF-P2T</td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/4/input.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/4/deter2.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/4/mog-full-6-ann_MAP.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                        <td>
-                            <audio controls>
-                                <source src="sources/audio/ddx7/lv/4/synthperm-p2t.opus" type="audio/ogg">
-                            </audio>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
             
             <table>
                 <tbody>
