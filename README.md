@@ -56,7 +56,7 @@ This repo was published when submitting a scientific paper (under review).
 Please cite it if you use any of this code in a reseach project:
 ```bibtex
 @misc{peladeauEstimatingMultimodalDistributions2026,
-  title = {Estimating Multimodal Distributions of Synthesizer Parameters Using Normalizing Flows and DDSP},
+  title = {Estimating Multimodal Distributions of Synthesizer Parameters Using Normalizing Flows},
   author = {Peladeau, Côme and Fourer, Dominique and Peeters, Geoffroy},
   date = {2026-06},
   pubstate = {prepublished},
